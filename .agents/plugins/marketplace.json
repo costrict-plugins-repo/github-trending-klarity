@@ -1,0 +1,20 @@
+{
+  "name": "within",
+  "interface": {
+    "displayName": "Within"
+  },
+  "plugins": [
+    {
+      "name": "within",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Within-AI/within-mcp.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    }
+  ]
+}

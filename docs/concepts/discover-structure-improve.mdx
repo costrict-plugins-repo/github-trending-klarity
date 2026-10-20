@@ -1,0 +1,48 @@
+---
+title: "Discover → Structure → Improve"
+description: "How Within captures, organizes, and improves how your organization runs."
+icon: "rotate"
+---
+
+Within runs the **Discover → Structure → Improve** loop continuously, replacing one-time "transformation projects" that take months and have a low success rate. When your agent uses the MCP, it's plugging into that loop.
+
+```mermaid
+flowchart LR
+  D[Discover] --> S[Structure] --> I[Improve] --> D
+```
+
+## Discover
+
+The Companion (ambient capture from sessions) and the Interviewer (AI-guided structured capture) generate raw process knowledge from how work actually happens. Agents read this layer through process, observation, and artifact tools.
+
+What lives here:
+
+- Observations from real sessions (deviations, exceptions, manual workarounds)
+- Source artifacts (BRDs, SOPs, video recordings, screenshots, logs)
+- Activity timelines that show the exact sequence of user actions
+
+## Structure
+
+The [Process Index](/concepts/process-index) is Within's context graph of how your organization runs — a living, queryable map of every process, its dependencies, and the evidence captured against it. Agents navigate this layer through `search`, `fetch`, and hierarchy tools.
+
+What lives here:
+
+- A versioned hierarchy of every process the organization runs, with steps, policies, inputs, outputs, and dependencies
+- The full observation history of each process — deviations, exceptions, and the activity timelines behind them
+- The teams, systems, and controls referenced from each process
+
+## Improve
+
+Use Within Advisor or this MCP in your AI tools to analyze thousands of processes at once — surface improvement opportunities, drive transformation, and build skills and agents grounded in how your business actually runs.
+
+## What this means for your assistant
+
+Any question your assistant asks usually maps to one stage of the loop:
+
+| Question shape | Loop stage | Where to look |
+|---|---|---|
+| "What's our evidence for X?" | Discover | Observations, activity timelines, artifacts |
+| "How does X work today?" | Structure | Process Index — hierarchy, version, dependencies |
+| "Where should we focus next?" | Improve | Observations, process dependencies, recent changes |
+
+The [Tool reference](/tools/overview) is organized along the same axis.

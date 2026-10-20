@@ -1,0 +1,117 @@
+---
+title: "Authentication"
+description: "OAuth where the client supports it, API key everywhere else."
+icon: "key"
+---
+
+The Within MCP supports two authentication methods. Most clients will use one or the other based on what they support.
+
+| Method | When to use |
+|---|---|
+| **OAuth** | Preferred. Use in any client that supports MCP OAuth (Claude, ChatGPT, Claude Code via the plugin, Codex via `codex mcp login`, Cursor via the **Connect** button, Gemini CLI via `/mcp auth`, Microsoft Copilot via a custom Copilot Studio agent). |
+| **API key** | Use when you need a long-lived headless connection, or for custom and automated setups where the OAuth flow isn't a fit. |
+
+Both methods scope the assistant to your active Within workspace and obey the same permissions as your Within user account.
+
+## Enable the MCP in your workspace
+
+Whichever auth method your client uses, the very first step is to turn the MCP on for the workspace you want to expose. Sign-in and Bearer-token connections will both fail until this is done.
+
+<Steps>
+  <Step title="Log in to Within">
+    Sign in to your Within workspace in a browser.
+  </Step>
+  <Step title="Open MCP settings">
+    Go to **Settings → MCP**.
+  </Step>
+  <Step title="Pick the workspace to expose">
+    Select the workspace you want your assistant to read from. This is the workspace the MCP will be enabled for.
+  </Step>
+  <Step title="Complete the workspace setup">
+    Follow the in-app prompts to finish enabling the MCP. Once that's done, return to your AI client and continue with the install steps for it.
+  </Step>
+</Steps>
+
+<Warning>
+  If you try to sign in (OAuth) or send a Bearer token before completing the workspace setup, the request will fail. This is the most common cause of "auth failed" errors.
+</Warning>
+
+See [FAQ](/faq) for other common install issues.
+
+## OAuth
+
+When the client supports MCP OAuth, you don't handle any credentials yourself. The first time the assistant calls a Within tool, the client redirects you to sign in to Within. After that, the client manages the token.
+
+Per-client setup is covered in the [Install pages](/install/claude).
+
+<Note>
+  Your organization may need to approve the Within connector or app before users can sign in. Contact your Within workspace admin if the OAuth redirect fails.
+</Note>
+
+## API key
+
+API key auth uses a long-lived secret that you generate in Within and pass to the MCP server as a `Bearer` token. Use this for any custom or headless setup, or when a client doesn't yet support MCP OAuth.
+
+### Generate a key
+
+Make sure you've completed [Enable the MCP in your workspace](#enable-the-mcp-in-your-workspace) first — keys are scoped to the workspace you selected there.
+
+<Steps>
+  <Step title="Open MCP settings in Within">
+    Go to **Settings → MCP** in the workspace you enabled.
+  </Step>
+  <Step title="Create the key">
+    Name it after the client you're connecting (e.g., `Claude Code – laptop`, `Cursor – work`). Set an expiration and click **Create**.
+  </Step>
+  <Step title="Copy the key immediately">
+    The full key is shown once. If you lose it, you'll need to generate a new one.
+  </Step>
+</Steps>
+
+You can view, disable, or rotate existing keys from the same screen. Keys are bound to the workspace they were generated in — to work in a different workspace, generate a separate key there (see [Switching workspaces](#switching-workspaces)).
+
+### Pass the key to your client
+
+Each client expects the key in a different place. The full request always carries:
+
+```text
+Authorization: Bearer <YOUR_API_KEY>
+```
+
+Per-client snippets:
+
+- [Claude Code](/install/claude-code#manual-mcp-add-api-key)
+- [Codex](/install/codex#config-file-install-api-key)
+- [Cursor](/install/cursor)
+- [Gemini CLI](/install/gemini-cli#api-key-fallback)
+- [GitHub Copilot](/install/github-copilot#api-key-install)
+
+### Keep keys safe
+
+<Warning>
+  Anyone with your API key can read everything your Within user can read. Don't commit keys to git, share them in chat, or check them into shared configs. Prefer environment variables over inline values in JSON/TOML files, and rotate immediately if a key is exposed.
+</Warning>
+
+## Switching workspaces
+
+Each connection is scoped to a single Within workspace. If you belong to more than one, how you switch depends on your authentication method.
+
+### OAuth
+
+Disconnect the Within connection in your client and reconnect. The reconnect flow shows a workspace picker, so you choose the workspace at sign-in.
+
+### API key
+
+API keys are bound to the workspace they were generated in — an existing key cannot be pointed at a different workspace.
+
+<Steps>
+  <Step title="Enable the MCP in the other workspace">
+    If you haven't already, complete [Enable the MCP in your workspace](#enable-the-mcp-in-your-workspace) for the workspace you want to switch to.
+  </Step>
+  <Step title="Generate a key there">
+    In that workspace, go to **Settings → MCP** and create a new API key.
+  </Step>
+  <Step title="Swap the Bearer token">
+    Update your client to send the new key as the `Bearer` token. The connection now reads from the new workspace.
+  </Step>
+</Steps>

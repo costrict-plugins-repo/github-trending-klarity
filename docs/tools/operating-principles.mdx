@@ -1,0 +1,38 @@
+---
+title: "Operating principles"
+description: "How an assistant should think while calling Within MCP tools."
+icon: "compass"
+---
+
+These principles apply to every tool in the catalog. They keep answers grounded, citable, and useful.
+
+## 1. Iterate on search
+
+Single queries miss. Processes use organization-specific names, and a broad topic rarely surfaces in one call. Be willing to refine two to four times before falling back to hierarchy browsing.
+
+## 2. Stay grounded
+
+Cite Within evidence when available — process IDs, artifact IDs, observation timestamps. Do not invent facts the workspace does not support.
+
+## 3. Separate observed from inferred
+
+> "Observed: X happens at step 3."
+> "Inferred: this is likely a duplication of Y based on similar steps in Z."
+
+This distinction matters more than any single tool call.
+
+## 4. Call out gaps
+
+If the workspace does not have evidence, say so plainly. That gap is itself useful information for the customer — it's how they learn what to capture next.
+
+## 5. Read-only
+
+Every tool in production is read-only. The MCP never mutates workspace state — all edits happen in the Within UI.
+
+## 6. `search_*` returns starting points, not answers
+
+`search`, `search_processes`, and `search_artifacts` all return short snippets meant to help you locate the right object. Always chain into a `get_*` or `fetch` call to read the full content before answering. Snippets are the lookup, not the citation.
+
+## 7. Let the assistant chain tools
+
+The best results come from open-ended prompts that let the model decide which tools to call and in what order. Describe what you want to know, not how to get it. The MCP is stateless per call — there's no penalty for parallel reads.

@@ -1,0 +1,46 @@
+---
+title: "State-of-the-team report"
+description: "What's running, what's changing, what's deviating, what needs the manager's attention."
+icon: "chart-line"
+---
+
+A team manager is checking in on the processes they own. The assistant should produce a concise, evidence-backed brief — not a feature dump.
+
+## Example prompts
+
+- "Give me a state-of-the-team report on the processes we own."
+- "What's changed in our P2P team's processes this quarter?"
+- "Onboard a new joiner to how this team runs."
+
+## End-to-end recipe
+
+<Steps>
+  <Step title="Confirm the workspace">
+    Call [`list_accessible_workspaces`](/tools/workspace) and switch if needed.
+  </Step>
+  <Step title="Pull the team's slice of the index">
+    Call [`get_process_hierarchy`](/tools/process-index) rooted at the team's value-stream node.
+  </Step>
+  <Step title="Find what's changed">
+    Call [`get_recent_process_changes`](/tools/observations-and-changes) — the workspace-wide feed of recently-edited process versions, filtered to this team's tree. Use this as your shortlist.
+  </Step>
+  <Step title="Drill into the recently-changed processes">
+    For each process from the previous step:
+    - [`get_process_details`](/tools/process-index) for current state, dependencies, and version label
+    - [`get_process_observations`](/tools/observations-and-changes) for a recent observation summary (default `verbosity="summary"`)
+  </Step>
+  <Step title="Spot-check emerging deviations">
+    Call [`get_observation_citation`](/tools/observations-and-changes) on the top two or three observations for primary-source detail.
+  </Step>
+  <Step title="Synthesize">
+    "Your team owns N processes. M changed in the last 30 days. K are showing deviation patterns worth your attention. Here are the top 3 with evidence."
+  </Step>
+</Steps>
+
+## Ramp a new joiner
+
+The same chain works for onboarding a new person (or a fresh agent): walk the team's part of the hierarchy, fetch the top processes, surface dependencies and recent changes. Ground the joiner in the team's actual operational reality, not in generic role-based assumptions.
+
+## Prove control coverage
+
+For audit-readiness questions ("where is control X supported?", "what's our evidence for policy Y?"), pull the relevant processes, surface the policies attached to the current version, and cite the supporting observations and activity timelines. The `attributes` field on [`get_process_details`](/tools/process-index) surfaces the workspace's custom compliance attributes if the user asks about a specific control type.

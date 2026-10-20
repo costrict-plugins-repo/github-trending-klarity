@@ -1,0 +1,63 @@
+---
+title: "Quickstart"
+description: "Pick a client, authenticate, and ask your first question."
+icon: "rocket"
+---
+
+<Info>
+  You need an active Within workspace and a user account. If you're not sure whether your organization has one, contact [hello@within.ai](mailto:hello@within.ai).
+</Info>
+
+<Steps>
+  <Step title="Pick your client">
+    Within MCP works with any MCP-compatible client. Use the install page that matches yours.
+
+    <Columns cols={2}>
+      <Card title="Claude" icon="/images/icons/claude.svg" href="/install/claude">Anthropic assistant</Card>
+      <Card title="Claude Code" icon="/images/icons/claude.svg" href="/install/claude-code">Anthropic CLI</Card>
+      <Card title="ChatGPT" icon="/images/icons/openai.svg" href="/install/chatgpt">OpenAI assistant</Card>
+      <Card title="Codex" icon="/images/icons/codex.svg" href="/install/codex">OpenAI CLI</Card>
+      <Card title="Cursor" icon="/images/icons/cursor.svg" href="/install/cursor">IDE</Card>
+      <Card title="Gemini CLI" icon="/images/icons/gemini.svg" href="/install/gemini-cli">Google CLI</Card>
+      <Card title="GitHub Copilot" icon="github" href="/install/github-copilot">GitHub CLI and app</Card>
+      <Card title="Microsoft Copilot" icon="/images/icons/microsoft-copilot.svg" href="/install/microsoft-copilot">Custom Copilot Studio agent</Card>
+    </Columns>
+  </Step>
+  <Step title="Authenticate">
+    Two methods are supported:
+
+    - **OAuth** — preferred where the client supports it. Sign in to Within from the client; no key handling.
+    - **API key** — used in alpha clients and as a fallback. Generate a key from `Settings → MCP` in your Within workspace and pass it as a `Bearer` token.
+
+    See [Authentication](/authentication) for the full setup.
+  </Step>
+  <Step title="Ask your first question">
+    Start with something concrete from your workspace. The MCP is most useful when the question references *your* processes, systems, or teams.
+
+    Examples:
+
+    - "How does our vendor onboarding process work today?"
+    - "What changed in our month-end close in the last 30 days?"
+    - "Which processes depend on System X?"
+    - "Find the highest-leverage automation opportunities in our P2P value stream."
+
+    See [How-to guides](/guides/process-performer) for end-to-end recipes.
+  </Step>
+</Steps>
+
+## What to expect
+
+The first time the assistant calls a Within tool, it will prompt you to authenticate (OAuth) or read your configured API key. After that, the assistant chains MCP tools in the background — searching the Process Index, fetching specific processes, pulling observations, and drilling into the activity timelines behind those observations — and answers in business language, citing the workspace evidence behind each claim.
+
+If the assistant cannot find evidence for a claim in your workspace, it should say so plainly. That gap is itself useful information.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Read the concepts" icon="book-open" href="/concepts/discover-structure-improve">
+    The Discover → Structure → Improve loop, and the three intelligence layers.
+  </Card>
+  <Card title="Browse the tools" icon="screwdriver-wrench" href="/tools/overview">
+    Every tool the MCP exposes, with selection guidance.
+  </Card>
+</Columns>
