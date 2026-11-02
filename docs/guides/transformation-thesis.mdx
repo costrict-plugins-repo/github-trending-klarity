@@ -1,0 +1,59 @@
+---
+title: "Form a transformation thesis"
+description: "Current state, blast radius, and intervention points — with evidence, on a specific process or value stream."
+icon: "lightbulb"
+---
+
+The user has zeroed in on a target process or value stream and wants the assistant to build a deep, evidence-grounded transformation thesis before recommending changes.
+
+## Example prompts
+
+- "Build a transformation thesis for our order-to-cash process."
+- "We want to redesign vendor onboarding — give me current state, blast radius, and intervention points."
+- "If we deprecate System X, what breaks?"
+
+## End-to-end recipe
+
+<Steps>
+  <Step title="Confirm the workspace">
+    Call [`list_accessible_workspaces`](/tools/workspace) and switch if needed.
+  </Step>
+  <Step title="Pull the target process">
+    Call [`search`](/tools/entry-points) → [`fetch`](/tools/entry-points), or [`fetch`](/tools/entry-points) directly if the ID is known. Then [`get_process_details`](/tools/process-index) for the full nested payload: current version, dependencies, hierarchy node, version history.
+  </Step>
+  <Step title="Place it in context">
+    Call [`get_hierarchy_node_details`](/tools/process-index) — parent value stream, sibling processes that may share patterns.
+  </Step>
+  <Step title="Read recent changes">
+    Call [`get_recent_process_changes`](/tools/observations-and-changes) — version evolution. What has the team been changing? In which direction?
+  </Step>
+  <Step title="Read all observations">
+    Call [`get_process_observations`](/tools/observations-and-changes) across versions. Look for repeated deviation patterns, exception types, manual workarounds.
+  </Step>
+  <Step title="Drill into representative timelines">
+    For three to five representative observations, call [`get_observation_citation`](/tools/observations-and-changes) — primary-source detail of how the process runs in practice (not how it's documented).
+  </Step>
+  <Step title="Walk the dependency graph in the index">
+    The `dependencies` field on `get_process_details` lists the upstream and downstream processes by ID. For each one, [`fetch`](/tools/entry-points) the process, then call [`get_process_details`](/tools/process-index) for the full payload. Read its steps, its own dependencies, and its recent observations.
+
+    Repeat for as many hops as the thesis needs:
+    - **Upstream**: what feeds this. Root cause / input quality matters for transformation viability.
+    - **Downstream**: blast radius if we change it. Surfacing this early prevents under-scoped proposals.
+
+    <Tip>
+      For high-impact transformation theses, drill the most-affected dependencies one more level — call [`get_process_observations`](/tools/observations-and-changes) and [`get_observation_citation`](/tools/observations-and-changes) on the dependencies whose behavior shapes your conclusions.
+    </Tip>
+  </Step>
+  <Step title="Cross-check sibling processes">
+    From the [`get_hierarchy_node_details`](/tools/process-index) payload returned earlier, [`fetch`](/tools/entry-points) two or three sibling processes under the same value stream. If they share patterns, controls, or systems with the target, the transformation thesis may need to address them too.
+  </Step>
+  <Step title="Synthesize the thesis">
+    Structure the answer as:
+
+    - **Current state**: how the process actually runs (cite observations).
+    - **Blast radius**: upstream feeders and downstream dependents.
+    - **Pain pattern**: the deviation, manual, or duplication signal — with evidence.
+    - **Intervention points**: where to change, ranked by leverage and risk.
+    - **Open questions**: what evidence is missing that would strengthen or invalidate the thesis.
+  </Step>
+</Steps>

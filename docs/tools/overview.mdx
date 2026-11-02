@@ -1,0 +1,41 @@
+---
+title: "Tool reference"
+description: "Within MCP tools organized by what you're trying to do."
+icon: "screwdriver-wrench"
+---
+
+The Within MCP exposes workspace data tools that an AI assistant can chain to answer questions grounded in a customer's workspace. It also provides an optional feedback submission tool. The point of this reference is not to enumerate APIs — it's to help you **pick the right tool for the goal at hand**.
+
+## How the toolset is organized
+
+Every workflow reduces to: **find the right process(es) → fetch detail → gather evidence → traverse relationships → synthesize**.
+
+| Group | What it covers | When to start here |
+|---|---|---|
+| [Standard entry points](/tools/entry-points) | `search`, `fetch` | The default starting path for any process question |
+| [Process Index](/tools/process-index) | Process browsing and relationships | Explore a business area or investigate a process in more detail |
+| [Process observations](/tools/observations-and-changes) | Changes, captured work, and participation | Understand what happened and find supporting evidence |
+| [Artifacts](/tools/artifacts) | Document search, content retrieval, in-document text search | The user names a document or recording |
+| [Workspace and directory](/tools/workspace) | Workspaces and people | Confirm your workspace or find a contributor |
+| [Feedback](/tools/feedback) | Submit explicitly approved user feedback | Sending feedback about the integration to Within |
+
+Each group has a purpose-based tool directory and a **Current schema** section for input details.
+
+## Shared parameters
+
+These parameters apply to every tool and are included in each raw JSON Schema.
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `context` | string | Yes | Purpose of the request. |
+| `mcp_thread_id` | string or null | No | Identifier linking related requests. Default: `null`. |
+
+## Before you call
+
+Read [Operating principles](/tools/operating-principles) — the conventions for staying grounded, iterating on search, separating observed from inferred, and avoiding common mis-uses (treating `search_*` snippets as final answers, exposing internal IDs in user-facing prose).
+
+## What the assistant should do with results
+
+A human using the Advisor might use two or three tools per question. An assistant in an agentic loop can chain ten or more — searching, drilling in, cross-referencing, synthesizing. The whole point of the MCP is that composition is the value.
+
+See [How-to guides](/guides/process-performer) for end-to-end recipes.

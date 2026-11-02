@@ -1,0 +1,43 @@
+{
+  "name": "within",
+  "version": "1.1.1",
+  "description": "Bring your organization's processes and operational knowledge into your AI assistant. The Within MCP connects to your Within workspace so you can query your organization's processes, explore the process index knowledge graph linking processes to systems and teams, and ground answers in how your business actually runs \u2014 not generic guesses.",
+  "author": {
+    "name": "Within Intelligence, Inc.",
+    "email": "hello@within.ai",
+    "url": "https://www.within.ai/"
+  },
+  "homepage": "https://www.within.ai/",
+  "repository": "https://github.com/Within-AI/within-mcp",
+  "license": "Apache-2.0",
+  "keywords": [
+    "within",
+    "mcp",
+    "process-intelligence",
+    "process-index",
+    "context-graph",
+    "knowledge-graph"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Within",
+    "shortDescription": "Explore your org's processes",
+    "longDescription": "Bring your organization's processes and operational knowledge into your AI assistant. The Within MCP connects to your Within workspace so you can query your organization's processes, explore the process index knowledge graph linking processes to systems and teams, and ground answers in how your business actually runs \u2014 not generic guesses.",
+    "developerName": "Within Intelligence, Inc.",
+    "category": "Business",
+    "capabilities": [
+      "Read",
+      "Analyze"
+    ],
+    "websiteURL": "https://www.within.ai/",
+    "privacyPolicyURL": "https://www.within.ai/product-privacy-policy",
+    "termsOfServiceURL": "https://www.within.ai/terms-of-service-2025",
+    "defaultPrompt": [
+      "Find me the invoice intake process in my Within Workspace.",
+      "How does my invoice intake process work?",
+      "Show me the procure-to-pay process and its dependencies in my Within Workspace."
+    ],
+    "brandColor": "#F56740"
+  }
+}
