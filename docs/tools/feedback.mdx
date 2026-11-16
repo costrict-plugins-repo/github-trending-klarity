@@ -1,0 +1,92 @@
+---
+title: "Feedback"
+description: "Send optional feedback about the Within MCP integration."
+icon: "comment"
+---
+
+| Tool | When to use |
+|---|---|
+| `submit_feedback` | Send feedback about the integration after the user explicitly approves sharing it with Within. |
+
+## What is shared
+
+Sends user-approved feedback to Within to help improve the integration.
+
+Feedback submission does not change your workspace content.
+
+## Current schema
+
+Parameters and examples for these tools.
+
+See [shared parameters](/tools/overview#shared-parameters). Replace example identifiers with your own.
+
+<AccordionGroup>
+
+<Accordion title="submit_feedback">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `sentiment` | string | Yes | Feedback sentiment. Values: `positive`, `negative`, `mixed`. |
+| `text` | string | Yes | Feedback text. Minimum length: 1. Maximum length: 2000. |
+
+Use this example only after the user has provided this feedback and approved its submission.
+
+**Example request**
+
+```json
+{
+  "context": "Send user-approved feedback.",
+  "sentiment": "positive",
+  "text": "The process search helped me find the right procedure."
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "sentiment": {
+      "enum": [
+        "positive",
+        "negative",
+        "mixed"
+      ],
+      "type": "string"
+    },
+    "text": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "context",
+    "sentiment",
+    "text"
+  ],
+  "type": "object",
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+</AccordionGroup>

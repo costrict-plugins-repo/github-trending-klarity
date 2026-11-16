@@ -1,0 +1,143 @@
+---
+title: "Workspace and directory"
+description: "Find your workspace and the people who contribute to it."
+icon: "building"
+---
+
+Use these tools to orient yourself in a workspace and find its contributors.
+
+| Tool | When to use |
+|---|---|
+| `list_accessible_workspaces` | Confirm which workspace is active and see the other workspaces you can access. |
+| `list_users` | Browse the workspace directory to find people and identify contributors. |
+
+## User directory
+
+The directory lists active people in the current workspace, with their names, email addresses, and workspace roles. Workspace admins can also see the last recorded sign-in time. Available information depends on your access.
+
+Use the directory with [`list_sessions`](/tools/observations-and-changes) to explore a person's contributions.
+
+## Switching workspaces
+
+Each connection is scoped to one workspace.
+
+- **OAuth:** disconnect and reconnect to choose a different workspace.
+- **API key:** use a key issued for the workspace you want to access, where API keys are available.
+
+See [Switching workspaces](/authentication#switching-workspaces) for details.
+
+## Current schema
+
+Parameters and examples for these tools.
+
+See [shared parameters](/tools/overview#shared-parameters). Replace example identifiers with your own.
+
+<AccordionGroup>
+
+<Accordion title="list_accessible_workspaces">
+
+This tool has no additional parameters beyond the shared parameters.
+
+**Example request**
+
+```json
+{
+  "context": "List available workspaces."
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "type": "object",
+  "required": [
+    "context"
+  ],
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+<Accordion title="list_users">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `limit` | integer | No | Result limit. Default: `25`. Range: 1–100. |
+| `offset` | integer | No | Results to skip. Default: `0`. Minimum: 0. |
+
+**Example request**
+
+```json
+{
+  "context": "Browse the workspace directory.",
+  "limit": 25,
+  "offset": 0
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "limit": {
+      "default": 25,
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "offset": {
+      "default": 0,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "type": "object",
+  "required": [
+    "context"
+  ],
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+</AccordionGroup>
