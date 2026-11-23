@@ -1,0 +1,662 @@
+---
+title: "Process observations"
+description: "Understand what changed and examine evidence from captured work."
+icon: "clock-rotate-left"
+---
+
+Use these tools to answer "What changed?", "What happened?", and "What evidence supports this?"
+
+| Tool | When to use |
+|---|---|
+| `get_recent_process_changes` | Find processes that have changed recently. |
+| `get_process_observations` | Understand how a process was performed and where a run differed from the documented approach. |
+| `get_observation_citation` | Examine the activity timeline behind an observation from one of your own sessions. |
+| `list_sessions` | Review individual captures and the people and processes involved. |
+| `get_capture_stats` | Assess capture activity and participation, or compare contributions over time. |
+
+## Working with evidence
+
+An observation describes a captured execution of a process. Its activity timeline shows the underlying actions. Use observations to find a relevant example, then inspect its timeline for supporting evidence.
+
+Observations can highlight useful departures from the documented process as well as friction or workarounds. Compare multiple observations before describing a pattern as recurring. Include timestamps when citing evidence.
+
+Session visibility and contributor breakdowns depend on your access. Activity timelines are available for your own sessions.
+
+## Common workflows
+
+- **Prepare a team update:** review recent changes, then read the affected processes.
+- **Investigate friction:** compare observations of a process and inspect the supporting timelines.
+- **Understand adoption:** review capture statistics, then inspect individual sessions to understand the totals.
+
+## Current schema
+
+Parameters and examples for these tools.
+
+See [shared parameters](/tools/overview#shared-parameters). Replace example identifiers with your own.
+
+<AccordionGroup>
+
+<Accordion title="get_recent_process_changes">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `limit` | integer | No | Result limit. Default: `20`. Range: 1–100. |
+
+**Example request**
+
+```json
+{
+  "context": "Review recent process changes.",
+  "limit": 10
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "type": "object",
+  "required": [
+    "context"
+  ],
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+<Accordion title="get_process_observations">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `process_resource_key` | string | Yes | Process identifier. |
+| `process_version_resource_key` | string or null | No | Process version. Default: `null`. |
+| `limit` | integer | No | Result limit. Default: `5`. Range: 1–100. |
+| `offset` | integer | No | Results to skip. Default: `0`. Minimum: 0. |
+| `verbosity` | string | No | Detail level. Default: `"summary"`. Values: `summary`, `full`. |
+
+**Example request**
+
+```json
+{
+  "context": "Review captured process activity.",
+  "process_resource_key": "process_example",
+  "limit": 5
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "process_resource_key": {
+      "type": "string"
+    },
+    "process_version_resource_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "limit": {
+      "default": 5,
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "offset": {
+      "default": 0,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "verbosity": {
+      "default": "summary",
+      "enum": [
+        "summary",
+        "full"
+      ],
+      "type": "string"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "context",
+    "process_resource_key"
+  ],
+  "type": "object",
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+<Accordion title="get_observation_citation">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `observation_resource_key` | string | Yes | Observation identifier. |
+| `verbosity` | string | No | Detail level. Default: `"low"`. Values: `low`, `medium`, `high`. |
+| `activity_block_index` | integer or null | No | Activity block to retrieve. Default: `null`. Minimum: 0. |
+
+Only citations from your own sessions are available.
+
+**Example request**
+
+```json
+{
+  "context": "Read evidence from a personal session.",
+  "observation_resource_key": "observation_example",
+  "verbosity": "medium"
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "observation_resource_key": {
+      "type": "string"
+    },
+    "verbosity": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "type": "string"
+    },
+    "activity_block_index": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "context",
+    "observation_resource_key"
+  ],
+  "type": "object",
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+<Accordion title="list_sessions">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `published` | boolean or null | No | Filter by publication status. Default: `null`. |
+| `session_types` | array of string or null | No | Capture types. Default: `null`. Values: `companion`, `interview`, `file_upload`. |
+| `statuses` | array of string or null | No | Capture statuses. Default: `null`. Values: `in_progress`, `disconnected`, `processing`, `completed`, `failed`. |
+| `contributors` | array of string or null | No | Contributors to include. Default: `null`. |
+| `time_range` | object | No | Time period. |
+| `time_range.period_days` | integer or null | No | Number of days. Default: `null`. Range: 1–365. |
+| `time_range.since` | string (date-time) or null | No | Start time. Default: `null`. |
+| `time_range.until` | string (date-time) or null | No | End time. Default: `null`. |
+| `sort_by` | string | No | Sort field. Default: `"created_at"`. Values: `created_at`, `type`, `status`, `duration_seconds`. |
+| `sort_order` | string | No | Sort direction. Default: `"desc"`. Values: `asc`, `desc`. |
+| `limit` | integer | No | Result limit. Default: `25`. Range: 1–100. |
+| `offset` | integer | No | Results to skip. Default: `0`. Minimum: 0. |
+
+If no time range is supplied, results cover all time.
+
+**Example request**
+
+```json
+{
+  "context": "Review recent captures.",
+  "time_range": {
+    "period_days": 7
+  },
+  "limit": 10
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "$defs": {
+    "PublicSessionStatus": {
+      "enum": [
+        "in_progress",
+        "disconnected",
+        "processing",
+        "completed",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "PublicSessionType": {
+      "enum": [
+        "companion",
+        "interview",
+        "file_upload"
+      ],
+      "type": "string"
+    },
+    "SortOrder": {
+      "enum": [
+        "asc",
+        "desc"
+      ],
+      "type": "string"
+    },
+    "TimeRange": {
+      "properties": {
+        "period_days": {
+          "anyOf": [
+            {
+              "maximum": 365,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "since": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    }
+  },
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "published": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "session_types": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PublicSessionType"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "statuses": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PublicSessionStatus"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "contributors": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "time_range": {
+      "$ref": "#/$defs/TimeRange"
+    },
+    "sort_by": {
+      "default": "created_at",
+      "enum": [
+        "created_at",
+        "type",
+        "status",
+        "duration_seconds"
+      ],
+      "type": "string"
+    },
+    "sort_order": {
+      "$ref": "#/$defs/SortOrder",
+      "default": "desc"
+    },
+    "limit": {
+      "default": 25,
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "offset": {
+      "default": 0,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "type": "object",
+  "required": [
+    "context"
+  ],
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+<Accordion title="get_capture_stats">
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `group_by` | string or null | No | Group results by. Default: `null`. Values: `user`, `session_type`, `session_status`. |
+| `published` | boolean or null | No | Filter by publication status. Default: `null`. |
+| `time_range` | object | No | Time period. |
+| `time_range.period_days` | integer or null | No | Number of days. Default: `null`. Range: 1–365. |
+| `time_range.since` | string (date-time) or null | No | Start time. Default: `null`. |
+| `time_range.until` | string (date-time) or null | No | End time. Default: `null`. |
+| `session_types` | array of string or null | No | Capture types. Default: `null`. Values: `companion`, `interview`, `file_upload`. |
+| `statuses` | array of string or null | No | Capture statuses. Default: `null`. Values: `in_progress`, `disconnected`, `processing`, `completed`, `failed`. |
+| `limit` | integer | No | Result limit. Default: `20`. Range: 1–100. |
+
+If no time range is supplied, the reporting window is the trailing 30 days. `limit` applies only to grouped results.
+
+**Example request**
+
+```json
+{
+  "context": "Summarize capture activity.",
+  "group_by": "session_type",
+  "time_range": {
+    "period_days": 30
+  }
+}
+```
+
+<details>
+<summary>Raw JSON Schema</summary>
+
+```json
+{
+  "$defs": {
+    "CaptureStatsDimension": {
+      "enum": [
+        "user",
+        "session_type",
+        "session_status"
+      ],
+      "type": "string"
+    },
+    "PublicSessionStatus": {
+      "enum": [
+        "in_progress",
+        "disconnected",
+        "processing",
+        "completed",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "PublicSessionType": {
+      "enum": [
+        "companion",
+        "interview",
+        "file_upload"
+      ],
+      "type": "string"
+    },
+    "TimeRange": {
+      "properties": {
+        "period_days": {
+          "anyOf": [
+            {
+              "maximum": 365,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "since": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    }
+  },
+  "properties": {
+    "context": {
+      "type": "string"
+    },
+    "group_by": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CaptureStatsDimension"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "published": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "time_range": {
+      "$ref": "#/$defs/TimeRange"
+    },
+    "session_types": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PublicSessionType"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "statuses": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PublicSessionStatus"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "mcp_thread_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "type": "object",
+  "required": [
+    "context"
+  ],
+  "additionalProperties": false
+}
+```
+
+</details>
+
+</Accordion>
+
+</AccordionGroup>
